@@ -9,6 +9,15 @@ const destinationEmail = process.env.TO_EMAIL || "maxime.tdc1@gmail.com";
 app.use(express.json());
 app.use(express.static(__dirname));
 
+app.get("/healthz", (req, res) => {
+  res.json({
+    ok: true,
+    smtpUserConfigured: Boolean(process.env.SMTP_USER),
+    smtpPassConfigured: Boolean(process.env.SMTP_PASS),
+    toEmail: destinationEmail
+  });
+});
+
 app.post("/contact", async (req, res) => {
   const name = String(req.body.name || "").trim();
   const email = String(req.body.email || "").trim();
@@ -70,8 +79,20 @@ app.post("/contact", async (req, res) => {
   }
 });
 
+app.get("/contact", (req, res) => {
+  res.status(405).json({ error: "Utilisez le formulaire pour envoyer une demande." });
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.use((error, req, res, next) => {
+  console.error("Erreur serveur:", error);
+  res.status(500).json({
+    error: "Erreur serveur.",
+    details: error.message || "Erreur inconnue."
+  });
 });
 
 app.listen(port, () => {
