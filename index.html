@@ -904,16 +904,15 @@
         </div>
       </div>
 
-      <form class="form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="contact">
-        <p style="display:none">
-          <label>Ne pas remplir : <input name="bot-field"></label>
-        </p>
+      <form class="form" id="contactForm" action="https://formsubmit.co/maxime.tdc1@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Nouvelle demande Aurum Studio">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
         <label for="name">Nom</label>
-        <input id="name" name="Nom" type="text" placeholder="Votre nom" required>
+        <input id="name" name="name" type="text" placeholder="Votre nom" required>
 
         <label for="email">Email</label>
-        <input id="email" name="Email" type="email" placeholder="votre@email.com" required>
+        <input id="email" name="email" type="email" placeholder="votre@email.com" required>
 
         <label for="business">Activite</label>
         <select id="business" name="Service souhaite">
@@ -932,7 +931,7 @@
         <textarea id="message" name="Besoin" placeholder="Nouveau site, refonte, page pour une offre, image plus pro, plus de demandes..." required></textarea>
 
         <button class="btn btn-dark" type="submit">Demander un devis</button>
-        <p class="form-note">Une fois le site publié, la demande arrive directement dans les messages Aurum Studio.</p>
+        <p class="form-note">Le formulaire envoie la demande par email a Aurum Studio.</p>
         <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
       </form>
     </section>
@@ -942,48 +941,5 @@
     <b>Aurum Studio</b>
     <span>Sites web premium, vitrines, landing pages et maintenance · France · 07 44 90 35 80 · maxime.tdc1@gmail.com</span>
   </footer>
-  <script>
-    const form = document.getElementById("contactForm");
-    const statusBox = document.getElementById("formStatus");
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const submitButton = form.querySelector("button[type='submit']");
-      const formData = new FormData(form);
-
-      statusBox.className = "form-status";
-      statusBox.textContent = "Envoi en cours...";
-      submitButton.disabled = true;
-      submitButton.textContent = "Envoi en cours...";
-
-      if (window.location.protocol === "file:") {
-        statusBox.className = "form-status is-error";
-        submitButton.disabled = false;
-        submitButton.textContent = "Demander un devis";
-        statusBox.textContent = "Le formulaire réel fonctionne après mise en ligne du site. En local, le navigateur bloque l'envoi.";
-        return;
-      }
-
-      try {
-        const response = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(formData).toString()
-        });
-
-        if (!response.ok) throw new Error("Erreur d'envoi");
-
-        form.reset();
-        statusBox.className = "form-status is-success";
-        statusBox.textContent = "Demande envoyée. Je vous réponds rapidement.";
-      } catch (error) {
-        statusBox.className = "form-status is-error";
-        statusBox.textContent = "L'envoi n'a pas fonctionné. Écrivez à maxime.tdc1@gmail.com ou réessayez.";
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Demander un devis";
-      }
-    });
-  </script>
 </body>
 </html>
