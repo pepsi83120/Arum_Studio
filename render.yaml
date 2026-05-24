@@ -2,5 +2,4 @@ services:
   - type: web
     name: aurum-studio
     runtime: static
-    plan: free
     staticPublishPath: .
