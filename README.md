@@ -30,3 +30,5 @@ Il faut activer la validation en deux etapes sur Google, puis creer un mot de pa
 Sur Render, utilise Blueprint avec :
 
 Blueprint Path : render.yaml
+
+Le service est force en plan gratuit avec `plan: free`.

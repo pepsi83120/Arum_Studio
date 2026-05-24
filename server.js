@@ -7,7 +7,6 @@ const port = process.env.PORT || 3000;
 const destinationEmail = process.env.TO_EMAIL || "maxime.tdc1@gmail.com";
 
 app.use(express.json());
-app.use(express.static(__dirname));
 
 app.get("/healthz", (req, res) => {
   res.json({
@@ -17,6 +16,8 @@ app.get("/healthz", (req, res) => {
     toEmail: destinationEmail
   });
 });
+
+app.use(express.static(__dirname));
 
 app.post("/contact", async (req, res) => {
   const name = String(req.body.name || "").trim();
