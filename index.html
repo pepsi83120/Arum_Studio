@@ -904,10 +904,7 @@
         </div>
       </div>
 
-      <form class="form" id="contactForm" action="https://formsubmit.co/maxime.tdc1@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Nouvelle demande Aurum Studio">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
+      <form class="form" id="contactForm">
         <label for="name">Nom</label>
         <input id="name" name="name" type="text" placeholder="Votre nom" required>
 
@@ -931,7 +928,7 @@
         <textarea id="message" name="Besoin" placeholder="Nouveau site, refonte, page pour une offre, image plus pro, plus de demandes..." required></textarea>
 
         <button class="btn btn-dark" type="submit">Demander un devis</button>
-        <p class="form-note">Le formulaire envoie la demande par email a Aurum Studio.</p>
+        <p class="form-note">Le formulaire envoie la demande directement par email a Aurum Studio.</p>
         <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
       </form>
     </section>
@@ -941,5 +938,40 @@
     <b>Aurum Studio</b>
     <span>Sites web premium, vitrines, landing pages et maintenance · France · 07 44 90 35 80 · maxime.tdc1@gmail.com</span>
   </footer>
+  <script>
+    const form = document.getElementById("contactForm");
+    const statusBox = document.getElementById("formStatus");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submitButton = form.querySelector("button[type='submit']");
+      const payload = Object.fromEntries(new FormData(form).entries());
+
+      statusBox.className = "form-status";
+      statusBox.textContent = "Envoi en cours...";
+      submitButton.disabled = true;
+      submitButton.textContent = "Envoi en cours...";
+
+      try {
+        const response = await fetch("/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Erreur d'envoi");
+
+        form.reset();
+        statusBox.className = "form-status is-success";
+        statusBox.textContent = "Demande envoyee. Vous recevrez une reponse rapidement.";
+      } catch (error) {
+        statusBox.className = "form-status is-error";
+        statusBox.textContent = "L'envoi a echoue. Vous pouvez aussi ecrire a maxime.tdc1@gmail.com.";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Demander un devis";
+      }
+    });
+  </script>
 </body>
 </html>
