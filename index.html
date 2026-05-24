@@ -973,11 +973,15 @@
       submitButton.disabled = true;
       submitButton.textContent = "Envoi en cours...";
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
       try {
         const response = await fetch("/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: controller.signal
         });
 
         const responseText = await response.text();
@@ -1006,9 +1010,13 @@
         statusBox.textContent = "Demande envoyee. Vous recevrez une reponse rapidement.";
       } catch (error) {
         const fallbackUrl = buildMailto(payload);
+        const message = error.name === "AbortError"
+          ? "le serveur met trop de temps a repondre"
+          : error.message;
         statusBox.className = "form-status is-error";
-        statusBox.innerHTML = `L'envoi serveur a echoue (${error.message}). <a href="${fallbackUrl}">Cliquez ici pour envoyer la demande par email</a>.`;
+        statusBox.innerHTML = `L'envoi serveur a echoue (${message}). <a href="${fallbackUrl}">Cliquez ici pour envoyer la demande par email</a>.`;
       } finally {
+        clearTimeout(timeoutId);
         submitButton.disabled = false;
         submitButton.textContent = "Demander un devis";
       }
