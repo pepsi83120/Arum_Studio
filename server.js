@@ -20,7 +20,10 @@ app.post("/contact", async (req, res) => {
     return res.status(400).json({ error: "Champs obligatoires manquants." });
   }
 
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+  const smtpUser = String(process.env.SMTP_USER || "").trim();
+  const smtpPass = String(process.env.SMTP_PASS || "").replace(/\s/g, "");
+
+  if (!smtpUser || !smtpPass) {
     return res.status(500).json({ error: "SMTP non configure sur Render." });
   }
 
@@ -29,8 +32,8 @@ app.post("/contact", async (req, res) => {
     port: Number(process.env.SMTP_PORT || 465),
     secure: String(process.env.SMTP_SECURE || "true") === "true",
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+      user: smtpUser,
+      pass: smtpPass
     }
   });
 
@@ -48,7 +51,7 @@ app.post("/contact", async (req, res) => {
 
   try {
     await transporter.sendMail({
-      from: `"Aurum Studio" <${process.env.SMTP_USER}>`,
+      from: `"Aurum Studio" <${smtpUser}>`,
       to: destinationEmail,
       replyTo: email,
       subject: `Nouvelle demande Aurum Studio - ${name}`,
@@ -58,7 +61,12 @@ app.post("/contact", async (req, res) => {
     res.json({ ok: true });
   } catch (error) {
     console.error("Erreur email:", error);
-    res.status(500).json({ error: "Email non envoye." });
+    res.status(500).json({
+      error: "Email non envoye.",
+      details: error.response || error.message || "Erreur SMTP inconnue.",
+      code: error.code || "",
+      command: error.command || ""
+    });
   }
 });
 

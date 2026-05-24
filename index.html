@@ -942,6 +942,27 @@
     const form = document.getElementById("contactForm");
     const statusBox = document.getElementById("formStatus");
 
+    function buildMailto(payload) {
+      const subject = `Demande de devis Aurum Studio - ${payload.name || "Contact"}`;
+      const body = [
+        "Bonjour,",
+        "",
+        "Je souhaite recevoir une proposition pour mon projet.",
+        "",
+        `Nom : ${payload.name || ""}`,
+        `Email : ${payload.email || ""}`,
+        `Service souhaite : ${payload["Service souhaite"] || ""}`,
+        `Site actuel / Instagram : ${payload["Site actuel ou Instagram"] || "Non renseigne"}`,
+        "",
+        "Besoin :",
+        payload.Besoin || "",
+        "",
+        "Merci."
+      ].join("\n");
+
+      return `mailto:maxime.tdc1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const submitButton = form.querySelector("button[type='submit']");
@@ -959,14 +980,18 @@
           body: JSON.stringify(payload)
         });
         const result = await response.json();
-        if (!response.ok) throw new Error(result.error || "Erreur d'envoi");
+        if (!response.ok) {
+          const detail = [result.error, result.code, result.command, result.details].filter(Boolean).join(" - ");
+          throw new Error(detail || "Erreur d'envoi");
+        }
 
         form.reset();
         statusBox.className = "form-status is-success";
         statusBox.textContent = "Demande envoyee. Vous recevrez une reponse rapidement.";
       } catch (error) {
+        const fallbackUrl = buildMailto(payload);
         statusBox.className = "form-status is-error";
-        statusBox.textContent = "L'envoi a echoue. Vous pouvez aussi ecrire a maxime.tdc1@gmail.com.";
+        statusBox.innerHTML = `L'envoi serveur a echoue (${error.message}). <a href="${fallbackUrl}">Cliquez ici pour envoyer la demande par email</a>.`;
       } finally {
         submitButton.disabled = false;
         submitButton.textContent = "Demander un devis";
