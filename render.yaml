@@ -1,37 +1,1020 @@
-# Aurum Studio - Site statique pour Render
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurum Studio | Sites web premium pour professionnels</title>
+  <meta name="description" content="Aurum Studio cree des sites web modernes, premium et efficaces pour professionnels, independants, commerces et marques locales.">
+  <style>
+    :root {
+      --ink: #111417;
+      --muted: #676f78;
+      --line: #ddd8cd;
+      --paper: #f8f5ee;
+      --white: #ffffff;
+      --night: #101417;
+      --deep: #1b2527;
+      --gold: #b88c4a;
+      --gold-soft: #dec08a;
+      --mist: #eee9dd;
+      --radius: 8px;
+      --shadow: 0 24px 70px rgba(12, 15, 18, .18);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-Ce dossier est pret a etre envoye sur GitHub puis deploye gratuitement sur Render en Static Site.
+    * { box-sizing: border-box; }
 
-## Contenu
+    html { scroll-behavior: smooth; }
 
-- index.html : page principale du site.
-- Portofolio : pages de demonstration liees depuis le site.
-- render.yaml : configuration Render Blueprint pour un site statique gratuit.
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+    }
 
-## Mettre sur GitHub
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-1. Cree un nouveau repository sur GitHub.
-2. Envoie tous les fichiers de ce dossier dans le repository.
-3. Verifie que index.html, Portofolio et render.yaml sont bien a la racine du repo.
+    a { color: inherit; text-decoration: none; }
 
-## Deployer gratuitement sur Render
+    .nav {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      left: 0;
+      right: 0;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px clamp(18px, 5vw, 64px);
+      color: var(--white);
+      background: linear-gradient(to bottom, rgba(4, 6, 8, .72), rgba(4, 6, 8, 0));
+    }
 
-Option simple :
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-weight: 900;
+      font-size: 13px;
+      white-space: nowrap;
+    }
 
-1. Va sur https://dashboard.render.com/
-2. Clique sur New puis Static Site.
-3. Connecte ton repository GitHub.
-4. Mets ces reglages :
-   - Build Command : laisse vide
-   - Publish Directory : .
-   - Plan : Free
-5. Clique sur Deploy Static Site.
+    .brand span {
+      color: rgba(255,255,255,.66);
+      letter-spacing: .11em;
+      font-size: 10px;
+      font-weight: 600;
+    }
 
-Option Blueprint :
+    .links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+    }
 
-1. Va sur New puis Blueprint.
-2. Selectionne le repository GitHub.
-3. Render detectera le fichier render.yaml.
-4. Lance le deploy.
+    .links a:hover { color: var(--white); }
 
-Render donne ensuite une URL gratuite en onrender.com avec HTTPS.
+    .btn {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-light {
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .btn-dark {
+      background: var(--night);
+      color: var(--white);
+    }
+
+    .btn-outline {
+      color: var(--white);
+      border-color: rgba(255,255,255,.42);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 94vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background: var(--night);
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(5, 7, 9, .88), rgba(5, 7, 9, .48) 54%, rgba(5, 7, 9, .12)),
+        linear-gradient(0deg, rgba(5, 7, 9, .86), rgba(5, 7, 9, 0) 52%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 148px clamp(18px, 5vw, 64px) 92px;
+      color: var(--white);
+    }
+
+    .eyebrow {
+      margin-bottom: 18px;
+      color: var(--gold-soft);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 860px;
+      margin-bottom: 22px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(47px, 8vw, 106px);
+      line-height: .92;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin-bottom: 30px;
+      color: rgba(255,255,255,.78);
+      font-size: clamp(17px, 2vw, 21px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .proof {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin: -50px clamp(18px, 5vw, 64px) 0;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.48);
+    }
+
+    .proof-item {
+      min-height: 120px;
+      padding: 24px;
+      border-right: 1px solid var(--line);
+    }
+
+    .proof-item:last-child { border-right: 0; }
+
+    .proof-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 500;
+    }
+
+    .proof-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section {
+      padding: clamp(72px, 10vw, 118px) clamp(18px, 5vw, 64px);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 34px;
+    }
+
+    .section h2 {
+      max-width: 760px;
+      margin-bottom: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 410px;
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .offer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .offer {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      overflow: hidden;
+      box-shadow: 0 15px 36px rgba(18, 24, 31, .08);
+    }
+
+    .offer-image {
+      aspect-ratio: 16 / 9;
+      background: var(--mist);
+    }
+
+    .offer-body {
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 26px;
+    }
+
+    .offer-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+    .offer small {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .offer-price {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border: 1px solid #d8c59d;
+      border-radius: 999px;
+      color: #6e4b1f;
+      background: #fbf4e5;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .offer h3 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 31px;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .offer p {
+      margin-bottom: 22px;
+      color: var(--muted);
+    }
+
+    .offer-includes {
+      margin: 0 0 14px;
+      color: #242b31;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .offer ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #3d454d;
+      font-size: 14px;
+    }
+
+    .offer-fit {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .offer-fit b {
+      color: var(--ink);
+    }
+
+    .dark {
+      background: var(--night);
+      color: var(--white);
+    }
+
+    .dark h2 { color: var(--white); }
+    .dark .section-head p { color: rgba(255,255,255,.68); }
+
+    .portfolio {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .case {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: #171d22;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .case::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(4, 6, 8, .82), rgba(4, 6, 8, .12) 62%);
+    }
+
+    .case-content {
+      position: absolute;
+      z-index: 2;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      color: var(--white);
+    }
+
+    .case-content small {
+      color: var(--gold-soft);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .case-content h3 {
+      margin: 9px 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 36px;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .case-content p {
+      max-width: 500px;
+      margin-bottom: 18px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: minmax(0, .75fr) minmax(360px, .55fr);
+      gap: clamp(30px, 5vw, 76px);
+      align-items: start;
+      background: var(--white);
+    }
+
+    .steps {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .step b {
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .price-box {
+      position: sticky;
+      top: 96px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: 0 15px 36px rgba(18, 24, 31, .08);
+    }
+
+    .price-box h3 {
+      margin-bottom: 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .price {
+      display: block;
+      margin: 18px 0;
+      color: var(--deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 48px;
+      line-height: 1;
+    }
+
+    .price-box p {
+      color: var(--muted);
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: minmax(280px, .72fr) minmax(360px, 1fr);
+      gap: clamp(24px, 4vw, 48px);
+      align-items: start;
+      background: var(--mist);
+    }
+
+    .contact p {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .contact-panel {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 12px 32px rgba(18, 24, 31, .06);
+    }
+
+    .form {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: 0 15px 36px rgba(18, 24, 31, .08);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #2d3339;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 48px;
+      margin-bottom: 16px;
+      padding: 12px 13px;
+      border: 1px solid #d3d0c6;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    .form-note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .contact-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(17,20,23,.12);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .contact-line:last-child {
+      border-bottom: 0;
+    }
+
+    .contact-line b {
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .form-status {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 13px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .form-status.is-success {
+      display: block;
+      border: 1px solid #b8d7bd;
+      color: #1f6b31;
+      background: #edf8ef;
+    }
+
+    .form-status.is-error {
+      display: block;
+      border: 1px solid #e4b9b4;
+      color: #8b2b24;
+      background: #fff0ee;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 30px clamp(18px, 5vw, 64px);
+      background: var(--night);
+      color: rgba(255,255,255,.68);
+      font-size: 13px;
+    }
+
+    .footer b {
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: .13em;
+    }
+
+    @media (max-width: 940px) {
+      .links a:not(.btn) { display: none; }
+      .proof { grid-template-columns: repeat(2, 1fr); }
+      .offer-grid, .portfolio, .process, .contact { grid-template-columns: 1fr; }
+      .case { min-height: 420px; }
+      .price-box { position: static; }
+    }
+
+    @media (max-width: 560px) {
+      .nav { min-height: 66px; padding: 14px 16px; }
+      .brand { font-size: 11px; }
+      .links .btn { min-height: 40px; padding: 0 12px; font-size: 12px; }
+      .hero { min-height: 86vh; }
+      .hero-content { padding: 120px 16px 68px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .proof { grid-template-columns: 1fr; margin: 0; box-shadow: none; }
+      .proof-item { min-height: 94px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .section-head { display: block; }
+      .section-head p { margin-top: 14px; }
+      .offer { min-height: auto; }
+      .case { min-height: 360px; }
+      .case-content h3 { font-size: 30px; }
+      .form { padding: 20px; }
+      .footer { display: block; }
+      .footer span { display: block; margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Navigation principale">
+    <a class="brand" href="#">
+      Aurum Studio
+      <span>Studio web</span>
+    </a>
+    <div class="links">
+      <a href="#services">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#process">Process</a>
+      <a class="btn btn-light" href="#contact">Demander un devis</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2200&q=85" alt="">
+    </div>
+    <div class="hero-content">
+      <div class="eyebrow">Aurum Studio · sites web, image & conversion</div>
+      <h1>Des sites web plus propres, plus crédibles, plus utiles.</h1>
+      <p>Aurum Studio aide les professionnels, indépendants et marques locales à avoir une présence en ligne moderne : site vitrine, refonte, landing page, portfolio, SEO local et maintenance.</p>
+      <div class="hero-actions">
+        <a class="btn btn-light" href="#services">Voir les services</a>
+        <a class="btn btn-outline" href="#portfolio">Voir les exemples</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="proof" aria-label="Promesses cles">
+    <div class="proof-item">
+      <strong>5-10j</strong>
+      <span>pour livrer un site propre selon le format</span>
+    </div>
+    <div class="proof-item">
+      <strong>6</strong>
+      <span>services clairs selon le besoin et le budget</span>
+    </div>
+    <div class="proof-item">
+      <strong>350€</strong>
+      <span>prix d'entrée pour une landing page simple</span>
+    </div>
+    <div class="proof-item">
+      <strong>100%</strong>
+      <span>pensé pour mobile, image pro et contact rapide</span>
+    </div>
+  </section>
+
+  <main>
+    <section class="section" id="services">
+      <div class="section-head">
+        <h2>Des services simples, avec un prix clair dès le départ.</h2>
+        <p>Tu peux commencer petit avec une page propre, ou construire une vitrine plus complète quand le besoin est plus sérieux.</p>
+      </div>
+
+      <div class="offer-grid">
+        <article class="offer">
+          <div class="offer-image">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1100&q=85" alt="Page web professionnelle sur ordinateur">
+          </div>
+          <div class="offer-body">
+            <div>
+              <div class="offer-top">
+                <small>01 · Offre rapide</small>
+                <span class="offer-price">350€+</span>
+              </div>
+            <h3>Landing page</h3>
+            <p>Une page simple pour présenter une offre, un service ou une activité et pousser au contact.</p>
+              <div class="offer-includes">Inclus</div>
+            <ul>
+              <li>1 page premium</li>
+              <li>texte clair</li>
+              <li>formulaire ou bouton contact</li>
+                <li>version mobile propre</li>
+            </ul>
+              <div class="offer-fit"><b>Parfait pour :</b> lancement d'offre, indépendant, pub, lien bio, service unique.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="offer">
+          <div class="offer-image">
+            <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1100&q=85" alt="Espace de travail moderne">
+          </div>
+          <div class="offer-body">
+            <div>
+              <div class="offer-top">
+                <small>02 · Présence pro</small>
+                <span class="offer-price">600€+</span>
+              </div>
+            <h3>Site vitrine</h3>
+            <p>Un site professionnel pour donner confiance, expliquer les services et recevoir des demandes.</p>
+              <div class="offer-includes">Inclus</div>
+            <ul>
+              <li>3 à 5 sections/pages</li>
+              <li>version mobile</li>
+              <li>SEO local simple</li>
+                <li>formulaire de contact</li>
+            </ul>
+              <div class="offer-fit"><b>Parfait pour :</b> artisan, garage, coach, institut, restaurant, petite entreprise.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="offer">
+          <div class="offer-image">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=85" alt="Maison premium avec piscine">
+          </div>
+          <div class="offer-body">
+            <div>
+              <div class="offer-top">
+                <small>03 · Image haut de gamme</small>
+                <span class="offer-price">900€+</span>
+              </div>
+            <h3>Site premium</h3>
+            <p>Une vitrine plus haut de gamme pour les pros qui veulent une image plus forte et plus crédible.</p>
+              <div class="offer-includes">Inclus</div>
+            <ul>
+              <li>direction visuelle</li>
+              <li>copywriting inclus</li>
+              <li>sections preuve/conversion</li>
+                <li>design plus travaillé</li>
+            </ul>
+              <div class="offer-fit"><b>Parfait pour :</b> immobilier, automobile premium, conciergerie, esthétique, architecture.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="offer">
+          <div class="offer-image">
+            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1100&q=85" alt="Equipe analysant un site web">
+          </div>
+          <div class="offer-body">
+            <div>
+              <div class="offer-top">
+                <small>04 · Amélioration</small>
+                <span class="offer-price">300€+</span>
+              </div>
+            <h3>Refonte express</h3>
+            <p>Améliorer un site existant sans tout recommencer : design, textes, structure et appels à l'action.</p>
+              <div class="offer-includes">Inclus</div>
+            <ul>
+              <li>audit rapide</li>
+              <li>nouvelle structure</li>
+              <li>amélioration visuelle</li>
+                <li>corrections prioritaires</li>
+            </ul>
+              <div class="offer-fit"><b>Parfait pour :</b> site daté, page confuse, activité déjà lancée, budget limité.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="offer">
+          <div class="offer-image">
+            <img src="https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=1100&q=85" alt="Analyse marketing et référencement">
+          </div>
+          <div class="offer-body">
+            <div>
+              <div class="offer-top">
+                <small>05 · Visibilité locale</small>
+                <span class="offer-price">150€+</span>
+              </div>
+            <h3>SEO local</h3>
+            <p>Optimiser la présence locale pour être plus clair sur Google et mieux convertir les visiteurs.</p>
+              <div class="offer-includes">Inclus</div>
+            <ul>
+              <li>titres et textes</li>
+              <li>structure locale</li>
+              <li>conseils Google Business</li>
+                <li>mots-clés de base</li>
+            </ul>
+              <div class="offer-fit"><b>Parfait pour :</b> pros locaux qui veulent être plus crédibles et trouvables.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="offer">
+          <div class="offer-image">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=85" alt="Maintenance et support informatique">
+          </div>
+          <div class="offer-body">
+            <div>
+              <div class="offer-top">
+                <small>06 · Suivi</small>
+                <span class="offer-price">49€/mois</span>
+              </div>
+            <h3>Maintenance</h3>
+            <p>Garder le site propre, à jour, et faire de petites modifications quand le business évolue.</p>
+              <div class="offer-includes">Inclus</div>
+            <ul>
+              <li>petites modifications</li>
+              <li>surveillance basique</li>
+              <li>support léger</li>
+                <li>améliorations simples</li>
+            </ul>
+              <div class="offer-fit"><b>Parfait pour :</b> clients qui veulent garder un site vivant sans s'en occuper.</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section dark" id="portfolio">
+      <div class="section-head">
+        <h2>Des exemples pour montrer le niveau possible.</h2>
+        <p>Ces démos ne limitent pas Aurum Studio à l'auto ou l'immobilier. Elles montrent le style premium qu'on peut adapter à différentes activités.</p>
+      </div>
+
+      <div class="portfolio">
+        <article class="case">
+          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1500&q=85" alt="Villa premium">
+          <div class="case-content">
+            <small>Immobilier premium</small>
+            <h3>Maison Rivea</h3>
+            <p>Demo pour agence immobiliere, chasseur immo ou conciergerie haut de gamme.</p>
+            <a class="btn btn-light" href="Portofolio/maison-rivea-demo.html">Ouvrir la demo</a>
+          </div>
+        </article>
+
+        <article class="case">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1500&q=85" alt="Voiture premium">
+          <div class="case-content">
+            <small>Automobile premium</small>
+            <h3>Atelier Vellum</h3>
+            <p>Demo pour garage haut de gamme, detailer, preparateur ou vendeur auto premium.</p>
+            <a class="btn btn-light" href="Portofolio/atelier-vellum-demo.html">Ouvrir la demo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section process" id="process">
+      <div>
+        <div class="eyebrow">Methode</div>
+        <h2>Un process simple pour livrer vite et proprement.</h2>
+        <div class="steps">
+          <div class="step">
+            <b>01</b>
+            <div>
+              <strong>Audit rapide</strong>
+          <span>On identifie l'image actuelle, les services à valoriser, le budget et le type de contact à générer.</span>
+            </div>
+          </div>
+          <div class="step">
+            <b>02</b>
+            <div>
+              <strong>Direction visuelle</strong>
+          <span>On crée une direction propre adaptée au métier : artisan, garage, immobilier, coach, esthétique, restaurant ou marque locale.</span>
+            </div>
+          </div>
+          <div class="step">
+            <b>03</b>
+            <div>
+              <strong>Texte et conversion</strong>
+          <span>Le site ne fait pas seulement joli : il explique, rassure et pousse à la prise de contact.</span>
+            </div>
+          </div>
+          <div class="step">
+            <b>04</b>
+            <div>
+              <strong>Livraison</strong>
+          <span>Version mobile propre, formulaire, boutons de contact et livraison prête à mettre en ligne.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="price-box">
+        <h3>Offres de départ</h3>
+        <p>Des prix accessibles pour construire les premiers projets Aurum Studio.</p>
+        <span class="price">350€+</span>
+        <p>Landing page dès 350€, site vitrine dès 600€, site premium dès 900€. Maintenance possible à partir de 49€/mois.</p>
+        <a class="btn btn-dark" href="#contact">Demander un devis</a>
+      </aside>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="contact-panel">
+        <div class="eyebrow">Contact</div>
+        <h2>Recevoir une proposition adaptée.</h2>
+        <p>Expliquez votre activité, votre besoin et votre budget. Je vous réponds avec une proposition simple et le service le plus adapté.</p>
+
+        <div class="contact-list">
+          <div class="contact-line">
+            <b>Email</b>
+            <a href="mailto:maxime.tdc1@gmail.com">maxime.tdc1@gmail.com</a>
+          </div>
+          <div class="contact-line">
+            <b>Téléphone</b>
+            <a href="tel:+33744903580">07 44 90 35 80</a>
+          </div>
+          <div class="contact-line">
+            <b>Localisation</b>
+            <span>France · projets à distance</span>
+          </div>
+          <div class="contact-line">
+            <b>Délai moyen</b>
+            <span>5 à 10 jours selon le projet</span>
+          </div>
+          <div class="contact-line">
+            <b>Premier échange</b>
+            <span>Gratuit, sans engagement</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none">
+          <label>Ne pas remplir : <input name="bot-field"></label>
+        </p>
+        <label for="name">Nom</label>
+        <input id="name" name="Nom" type="text" placeholder="Votre nom" required>
+
+        <label for="email">Email</label>
+        <input id="email" name="Email" type="email" placeholder="votre@email.com" required>
+
+        <label for="business">Activite</label>
+        <select id="business" name="Service souhaite">
+          <option>Landing page</option>
+          <option>Site vitrine</option>
+          <option>Site premium</option>
+          <option>Refonte de site</option>
+          <option>SEO local</option>
+          <option>Maintenance</option>
+        </select>
+
+        <label for="website">Site actuel / Instagram</label>
+        <input id="website" name="Site actuel ou Instagram" type="text" placeholder="Lien si vous en avez un">
+
+        <label for="message">Besoin</label>
+        <textarea id="message" name="Besoin" placeholder="Nouveau site, refonte, page pour une offre, image plus pro, plus de demandes..." required></textarea>
+
+        <button class="btn btn-dark" type="submit">Demander un devis</button>
+        <p class="form-note">Une fois le site publié, la demande arrive directement dans les messages Aurum Studio.</p>
+        <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <b>Aurum Studio</b>
+    <span>Sites web premium, vitrines, landing pages et maintenance · France · 07 44 90 35 80 · maxime.tdc1@gmail.com</span>
+  </footer>
+  <script>
+    const form = document.getElementById("contactForm");
+    const statusBox = document.getElementById("formStatus");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submitButton = form.querySelector("button[type='submit']");
+      const formData = new FormData(form);
+
+      statusBox.className = "form-status";
+      statusBox.textContent = "Envoi en cours...";
+      submitButton.disabled = true;
+      submitButton.textContent = "Envoi en cours...";
+
+      if (window.location.protocol === "file:") {
+        statusBox.className = "form-status is-error";
+        submitButton.disabled = false;
+        submitButton.textContent = "Demander un devis";
+        statusBox.textContent = "Le formulaire réel fonctionne après mise en ligne du site. En local, le navigateur bloque l'envoi.";
+        return;
+      }
+
+      try {
+        const response = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData).toString()
+        });
+
+        if (!response.ok) throw new Error("Erreur d'envoi");
+
+        form.reset();
+        statusBox.className = "form-status is-success";
+        statusBox.textContent = "Demande envoyée. Je vous réponds rapidement.";
+      } catch (error) {
+        statusBox.className = "form-status is-error";
+        statusBox.textContent = "L'envoi n'a pas fonctionné. Écrivez à maxime.tdc1@gmail.com ou réessayez.";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Demander un devis";
+      }
+    });
+  </script>
+</body>
+</html>
