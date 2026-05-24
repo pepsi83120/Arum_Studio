@@ -1,0 +1,37 @@
+# Aurum Studio - Site statique pour Render
+
+Ce dossier est pret a etre envoye sur GitHub puis deploye gratuitement sur Render en Static Site.
+
+## Contenu
+
+- `index.html` : page principale du site.
+- `Portofolio/` : pages de demonstration liees depuis le site.
+- `render.yaml` : configuration Render Blueprint pour un site statique gratuit.
+
+## Mettre sur GitHub
+
+1. Cree un nouveau repository sur GitHub.
+2. Envoie tous les fichiers de ce dossier dans le repository.
+3. Verifie que `index.html`, `Portofolio/` et `render.yaml` sont bien a la racine du repo.
+
+## Deployer gratuitement sur Render
+
+Option simple :
+
+1. Va sur https://dashboard.render.com/
+2. Clique sur `New` puis `Static Site`.
+3. Connecte ton repository GitHub.
+4. Mets ces reglages :
+   - Build Command : laisse vide
+   - Publish Directory : `.`
+   - Plan : Free
+5. Clique sur `Deploy Static Site`.
+
+Option Blueprint :
+
+1. Va sur `New` puis `Blueprint`.
+2. Selectionne le repository GitHub.
+3. Render detectera le fichier `render.yaml`.
+4. Lance le deploy.
+
+Render donne ensuite une URL gratuite en `onrender.com` avec HTTPS.

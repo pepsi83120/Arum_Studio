@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier Vellum | Garage auto premium</title>
+  <meta name="description" content="Demo de site premium pour un garage automobile haut de gamme.">
+  <style>
+    :root {
+      --ink: #111316;
+      --muted: #69707a;
+      --line: #d9dde2;
+      --paper: #f7f5f0;
+      --white: #ffffff;
+      --steel: #85919e;
+      --bronze: #b47b43;
+      --charcoal: #0d1115;
+      --graphite: #171d23;
+      --radius: 8px;
+      --shadow: 0 24px 70px rgba(7, 10, 14, .24);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      min-height: 74px;
+      padding: 18px clamp(18px, 5vw, 64px);
+      color: var(--white);
+      background: linear-gradient(to bottom, rgba(2, 4, 7, .74), rgba(2, 4, 7, 0));
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      text-transform: uppercase;
+      letter-spacing: .17em;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: rgba(255,255,255,.66);
+      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+    }
+
+    .nav a:hover { color: var(--white); }
+
+    .btn {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-bright {
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .btn-dark {
+      background: var(--charcoal);
+      color: var(--white);
+    }
+
+    .btn-ghost {
+      color: var(--white);
+      border-color: rgba(255,255,255,.42);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 94vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(3, 5, 8, .86), rgba(3, 5, 8, .48) 50%, rgba(3, 5, 8, .10)),
+        linear-gradient(0deg, rgba(3, 5, 8, .82), rgba(3, 5, 8, 0) 52%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 850px;
+      padding: 150px clamp(18px, 5vw, 64px) 94px;
+      color: var(--white);
+    }
+
+    .eyebrow {
+      margin-bottom: 18px;
+      color: #d1a067;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 820px;
+      margin-bottom: 22px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 8vw, 108px);
+      line-height: .92;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin-bottom: 30px;
+      color: rgba(255,255,255,.78);
+      font-size: clamp(17px, 2vw, 21px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .status-strip {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin: -50px clamp(18px, 5vw, 64px) 0;
+      border: 1px solid rgba(255,255,255,.18);
+      background: var(--graphite);
+      box-shadow: var(--shadow);
+    }
+
+    .status {
+      min-height: 120px;
+      padding: 24px;
+      border-right: 1px solid rgba(255,255,255,.10);
+      color: var(--white);
+    }
+
+    .status:last-child { border-right: 0; }
+
+    .status strong {
+      display: block;
+      margin-bottom: 6px;
+      font-family: Georgia, "Times New Roman", serif;
+      color: #dfb174;
+      font-size: 34px;
+      font-weight: 500;
+    }
+
+    .status span {
+      color: rgba(255,255,255,.64);
+      font-size: 13px;
+    }
+
+    .section {
+      padding: clamp(72px, 10vw, 118px) clamp(18px, 5vw, 64px);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 34px;
+    }
+
+    .section h2 {
+      max-width: 720px;
+      margin-bottom: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 400px;
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .service {
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: 0 15px 36px rgba(18, 24, 31, .08);
+    }
+
+    .service small {
+      color: var(--bronze);
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .service h3 {
+      margin: 38px 0 14px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 32px;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .service p {
+      margin-bottom: 22px;
+      color: var(--muted);
+    }
+
+    .service ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #3d454d;
+      font-size: 14px;
+    }
+
+    .feature {
+      display: grid;
+      grid-template-columns: minmax(0, .86fr) minmax(340px, .72fr);
+      gap: clamp(28px, 5vw, 76px);
+      align-items: stretch;
+      background: var(--charcoal);
+      color: var(--white);
+    }
+
+    .feature-copy {
+      padding: clamp(72px, 10vw, 116px) 0 clamp(72px, 10vw, 116px) clamp(18px, 5vw, 64px);
+    }
+
+    .feature h2 {
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    .feature p {
+      max-width: 620px;
+      color: rgba(255,255,255,.70);
+      font-size: 17px;
+    }
+
+    .process {
+      display: grid;
+      gap: 16px;
+      margin-top: 34px;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.14);
+    }
+
+    .process-item b {
+      color: #dfb174;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+    .process-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+
+    .process-item span {
+      color: rgba(255,255,255,.62);
+      font-size: 14px;
+    }
+
+    .feature-image {
+      min-height: 700px;
+      background: #1d252d;
+    }
+
+    .vehicles {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
+    }
+
+    .vehicle-main,
+    .vehicle-side {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: #121820;
+    }
+
+    .vehicle-side {
+      display: grid;
+      gap: 20px;
+      background: transparent;
+    }
+
+    .vehicle-card {
+      position: relative;
+      min-height: 250px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: #121820;
+    }
+
+    .vehicle-main::after,
+    .vehicle-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(5, 7, 10, .75), rgba(5, 7, 10, 0) 58%);
+    }
+
+    .vehicle-label {
+      position: absolute;
+      z-index: 2;
+      left: 24px;
+      right: 24px;
+      bottom: 22px;
+      color: var(--white);
+    }
+
+    .vehicle-label small {
+      color: #dfb174;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .vehicle-label h3 {
+      margin: 7px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 31px;
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: minmax(0, .78fr) minmax(320px, .52fr);
+      gap: clamp(28px, 5vw, 70px);
+      background: var(--white);
+    }
+
+    .contact p {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .form {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f4f1eb;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #2d3339;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 48px;
+      margin-bottom: 16px;
+      padding: 12px 13px;
+      border: 1px solid #d3d2cf;
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    .form-note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 30px clamp(18px, 5vw, 64px);
+      background: var(--charcoal);
+      color: rgba(255,255,255,.68);
+      font-size: 13px;
+    }
+
+    .footer b {
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: .13em;
+    }
+
+    @media (max-width: 920px) {
+      .nav a:not(.btn) { display: none; }
+      .status-strip { grid-template-columns: repeat(2, 1fr); }
+      .services { grid-template-columns: 1fr; }
+      .feature, .vehicles, .contact { grid-template-columns: 1fr; }
+      .feature-copy { padding-right: clamp(18px, 5vw, 64px); }
+      .feature-image { min-height: 360px; order: -1; }
+      .vehicle-main { min-height: 390px; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar { min-height: 66px; padding: 14px 16px; }
+      .logo { font-size: 11px; }
+      .nav .btn { min-height: 40px; padding: 0 12px; font-size: 12px; }
+      .hero { min-height: 86vh; }
+      .hero-content { padding: 120px 16px 68px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .status-strip { grid-template-columns: 1fr; margin: 0; box-shadow: none; }
+      .status { min-height: 96px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.10); }
+      .section-head { display: block; }
+      .section-head p { margin-top: 14px; }
+      .service { min-height: auto; }
+      .vehicle-main, .vehicle-card { min-height: 300px; }
+      .form { padding: 20px; }
+      .footer { display: block; }
+      .footer span { display: block; margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Navigation principale">
+    <a class="logo" href="#">
+      Atelier Vellum
+      <span>Performance & prestige</span>
+    </a>
+    <div class="nav">
+      <a href="#services">Services</a>
+      <a href="#atelier">Atelier</a>
+      <a href="#contact">Rendez-vous</a>
+      <a class="btn btn-bright" href="#contact">Demande privee</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-image" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2200&q=85" alt="">
+    </div>
+    <div class="hero-content">
+      <div class="eyebrow">Garage premium · vehicules d'exception</div>
+      <h1>L'entretien haut niveau pour automobiles exigeantes.</h1>
+      <p>Atelier Vellum accompagne proprietaires de vehicules sport, prestige et collection avec une approche precise, transparente et orientee performance.</p>
+      <div class="hero-actions">
+        <a class="btn btn-bright" href="#services">Decouvrir les services</a>
+        <a class="btn btn-ghost" href="#contact">Planifier un diagnostic</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="status-strip" aria-label="Chiffres cles">
+    <div class="status">
+      <strong>24h</strong>
+      <span>pour recevoir un retour clair apres diagnostic</span>
+    </div>
+    <div class="status">
+      <strong>312</strong>
+      <span>vehicules prestige suivis en entretien</span>
+    </div>
+    <div class="status">
+      <strong>4.9/5</strong>
+      <span>satisfaction client sur interventions premium</span>
+    </div>
+    <div class="status">
+      <strong>100%</strong>
+      <span>devis valide avant intervention</span>
+    </div>
+  </section>
+
+  <main>
+    <section class="section" id="services">
+      <div class="section-head">
+        <h2>Un garage qui parle autant precision que confiance.</h2>
+        <p>Chaque service est presente pour rassurer vite : ce qui est fait, pourquoi c'est utile, et comment le client garde le controle.</p>
+      </div>
+
+      <div class="services">
+        <article class="service">
+          <small>01 · Diagnostic</small>
+          <div>
+            <h3>Lecture complete</h3>
+            <p>Analyse electronique, controle visuel, priorisation des risques et rapport simple avant devis.</p>
+            <ul>
+              <li>Scan multimarque</li>
+              <li>Rapport clair</li>
+              <li>Priorites securite</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="service">
+          <small>02 · Entretien</small>
+          <div>
+            <h3>Suivi prestige</h3>
+            <p>Entretien planifie pour vehicules haut de gamme avec historique lisible et pieces selectionnees.</p>
+            <ul>
+              <li>Revision premium</li>
+              <li>Freinage & trains roulants</li>
+              <li>Historique digital</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="service">
+          <small>03 · Performance</small>
+          <div>
+            <h3>Preparation sobre</h3>
+            <p>Optimisations elegantes : comportement, sonorite, tenue de route et fiabilite avant puissance brute.</p>
+            <ul>
+              <li>Conseil upgrades</li>
+              <li>Pose accessoires</li>
+              <li>Controle post-intervention</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="feature" id="atelier">
+      <div class="feature-copy">
+        <div class="eyebrow">Methode atelier</div>
+        <h2>Une experience client nette, du premier message a la remise des cles.</h2>
+        <p>Le client premium veut savoir ou va son argent. Le site met en avant une methode claire : diagnostic, validation, intervention, restitution. C'est ce qui justifie un positionnement plus cher.</p>
+
+        <div class="process">
+          <div class="process-item">
+            <b>01</b>
+            <div>
+              <strong>Demande qualifiee</strong>
+              <span>Le formulaire recupere modele, kilometrage, symptomes et objectif avant tout rendez-vous.</span>
+            </div>
+          </div>
+          <div class="process-item">
+            <b>02</b>
+            <div>
+              <strong>Diagnostic documente</strong>
+              <span>Photos, observations et priorites sont rassemblees dans une lecture simple pour le client.</span>
+            </div>
+          </div>
+          <div class="process-item">
+            <b>03</b>
+            <div>
+              <strong>Validation avant action</strong>
+              <span>Aucune intervention surprise : le client valide les travaux, le budget et le delai.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-image" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1632823469850-1b7b1e8b7e1e?auto=format&fit=crop&w=1300&q=85" alt="">
+      </div>
+    </section>
+
+    <section class="section" id="selection">
+      <div class="section-head">
+        <h2>Une vitrine faite pour valoriser le savoir-faire.</h2>
+        <p>Photos atelier, vehicules clients, avant/apres et interventions signature creent une preuve visuelle immediate.</p>
+      </div>
+
+      <div class="vehicles">
+        <article class="vehicle-main">
+          <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1500&q=85" alt="Voiture sportive rouge">
+          <div class="vehicle-label">
+            <small>Suivi performance</small>
+            <h3>Sportive italienne · controle complet avant saison</h3>
+          </div>
+        </article>
+        <div class="vehicle-side">
+          <article class="vehicle-card">
+            <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=85" alt="Voiture premium en studio sombre">
+            <div class="vehicle-label">
+              <small>Detailing mecanique</small>
+              <h3>Remise a niveau prestige</h3>
+            </div>
+          </article>
+          <article class="vehicle-card">
+            <img src="https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1200&q=85" alt="Voiture de luxe grise">
+            <div class="vehicle-label">
+              <small>Preparation</small>
+              <h3>Configuration route & plaisir</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div>
+        <div class="eyebrow">Rendez-vous prive</div>
+        <h2>Obtenir un premier avis atelier.</h2>
+        <p>Le formulaire transforme un visiteur interesse en demande qualifiee : modele, besoin, delai, budget et moyen de contact. C'est exactement ce qu'un garage premium doit recevoir.</p>
+      </div>
+
+      <form class="form">
+        <label for="name">Nom</label>
+        <input id="name" name="name" type="text" placeholder="Votre nom">
+
+        <label for="vehicle">Vehicule</label>
+        <input id="vehicle" name="vehicle" type="text" placeholder="Ex : Porsche 911 997 Carrera S">
+
+        <label for="need">Besoin</label>
+        <select id="need" name="need">
+          <option>Diagnostic</option>
+          <option>Entretien premium</option>
+          <option>Preparation / upgrade</option>
+          <option>Avis avant achat</option>
+        </select>
+
+        <label for="details">Details</label>
+        <textarea id="details" name="details" placeholder="Symptomes, kilometrage, delai souhaite..."></textarea>
+
+        <button class="btn btn-dark" type="button">Demander un retour</button>
+        <p class="form-note">Demo portfolio : le formulaire n'envoie pas encore de message.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <b>Atelier Vellum</b>
+    <span>Demo de site premium pour garage automobile haut de gamme.</span>
+  </footer>
+</body>
+</html>
